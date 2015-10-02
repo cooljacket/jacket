@@ -1,0 +1,90 @@
+# 10/1/2015 15:55
+1. 不知为何，在服务器上需要指定ip地址为0.0.0.0才能在浏览器上看到远程服务器的效果。
+比如：python3 manage.py runserver 0.0.0.0:8002
+
+**据说是因为，django内置的服务器是只监听本地(localhost)的访问，但放在服务器上，想要的是监听所有ip的访问，那么就得改成0.0.0.0了？
+
+
+2. 注意在开发环境和生产环境的设置：
+import socket
+if socket.gethostname() == 'jacket':
+    DEBUG = False
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = []
+
+
+3. 服务器配置：
+python		3.4.3
+nginx		1.6.2
+uwsgi		
+
+
+
+root@jacket:~/jacket# nginx -h
+nginx version: nginx/1.6.2 (Ubuntu)
+Usage: nginx [-?hvVtq] [-s signal] [-c filename] [-p prefix] [-g directives]
+-p prefix     : set prefix path (default: /usr/share/nginx/)
+-c filename   : set configuration file (default: /etc/nginx/nginx.conf)
+
+root@jacket:~/jacket# nginx -v
+nginx version: nginx/1.6.2 (Ubuntu)
+
+
+# /root/uwsgi_config/uwsgi9090.ini
+[uwsgi]
+socket = 127.0.0.1:9090
+master = true         //主进程
+vhost = true          //多站模式
+no-site = true        //多站模式时不设置入口模块和文件
+workers = 2           //子进程数
+reload-mercy = 10     
+vacuum = true         //退出、重启时清理文件
+max-requests = 1000   
+limit-as = 512
+buffer-size = 30000
+pidfile = /var/run/uwsgi9090.pid    //pid文件，用于下面的脚本启动、停止该进程
+daemonize = /website/uwsgi9090.log
+
+
+# 彻底删除nginx
+sudo apt-get --purge remove nginx
+sudo apt-get autoremove 
+dpkg --get-selections|grep nginx 
+罗列出与nginx相关的软件， 
+nginx-common deinstall 
+然后 sudo apt-get --purge remove nginx-common
+
+http://simple-is-better.com/news/756
+
+server {
+	listen   80; ## listen for ipv4; this line is default and implied
+	#listen   [::]:80 default ipv6only=on; ## listen for ipv6
+
+	server_name happyjacket.me;
+
+	access_log /var/log/nginx/happyjacket_access.log ;
+	error_log /var/log/nginx/happyjacket_error.log ;
+
+	location / {
+		# uwsgi_pass unix:///var/run/demo.sock;	# ??demo.sock
+		uwsgi_pass 127.0.0.1:9090;
+		include uwsgi_params;
+	}
+}
+
+
+http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html
+
+the web client <-> the web server <-> the socket <-> uwsgi <-> Django
+
+
+uwsgi --socket /tmp/jacket.sock --wsgi-file test.py & chmod 777 /tmp/jacket.sock
+
+or:
+
+uwsgi --socket /tmp/jacket.sock --wsgi-file test.py --chmod-socket=664
+
+
+http://happyjacket.me:8000/static/admin/img/tooltag-add.png
