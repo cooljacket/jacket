@@ -84,7 +84,300 @@ uwsgi --socket /tmp/jacket.sock --wsgi-file test.py & chmod 777 /tmp/jacket.sock
 
 or:
 
-uwsgi --socket /tmp/jacket.sock --wsgi-file test.py --chmod-socket=664
+uwsgi --socket /tmp/jacket.sock --wsgi-file test.py --chmod-socket=666
+uwsgi --socket /tmp/jacket.sock --module jacket.wsgi --chmod-socket=666
+
+uwsgi --ini /mysite/mysite_uwsgi.ini
 
 
 http://happyjacket.me:8000/static/admin/img/tooltag-add.png
+
+http://happyjacket.me:8000/static/hello.html
+
+uwsgi --ini /mysite/mysite_uwsgi.ini
+
+http://supervisord.org/configuration.html
+
+
+# mysql忘记root密码
+命令行输入mysql -uroot，以root方式不用密码进入
+use mysql;
+update user set password=password("new_pass") where user="root"; 
+flush privileges; 
+exit;
+
+
+# 修改为使用mysql，只需要修改setting.py即可
+1. INSTALLED_APPS中加入数据库的名字（注意mysql中要先建好这个数据库）
+2. 修改DATABASES设置
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'csvt',
+        'USER':'root',
+        'PASSWORD':'jacket',
+        'HOST':'',
+        'PORT':'',
+    } 
+}
+**set names utf8，将mysql的字符集设置为utf8.
+
+
+无力吐槽，使用mysql没有MySQLdb这个模块，这个模块最新又只有python2.7的。。。
+只能永辉splite3了。
+
+
+更新数据库是：
+1. py3 manage.py makemigrations
+2. py3 manage.py migrate
+
+
+写完数据模型，后台添加应该是没什么问题了，所以现在主要是写前端视图
+
+
+course的这个属性可能还要斟酌一下：
+mentor = models.ManyToManyField(Teacher, verbose_name='老师', max_length=name_len)
+
+这个field做一个自动更新？本地js还是要一直跟服务器ajax？
+deadline = models.DateTimeField('DDL')
+
+
+可能改成yes或no比较好
+topIt = models.BooleanField('置顶', default=False)
+
+
+# 向已有model中增加新的字段
+先用python manage.py sqlall app_name查看表结构
+然后python manage.py shell，手动添加表结构（注意Not Null的以后再添加）
+from django.db import connection
+cur = connection.cursor()
+cur.execute('ALTER TABLE hw_homework ADD COLUMN OK_num smallInt')
+cur.execute('ALTER TABLE hw_homework ADD COLUMN description text')
+cur.execute('ALTER TABLE hw_zan ADD COLUMN name varchar(30)')
+
+还要做 {
+    1. 过期的和正在进行的要分开
+    2. 置顶的大作业们怎么处理？
+    3. 大学，学院，专业，等等，这些的view页面也要做，还有作业的详情页面
+}
+
+今晚导入实际数据后，就放到服务器上去运行了
+
+界面差不多就这样了
+
+
+
+1. 点赞和完成人数，先放着
+2. 倒计时也先放着
+3. 导航栏加一个“本站介绍”
+4. 加个底部声明foot
+
+5. 现在先从hw做回去，一层一层，做好基本的可用的就可以了
+6. 面包屑也要同时在视图中做好
+7. aboutMe 页面留到最后再写
+8. img的路径问题啊啊啊
+
+
+
+【心得】
+1. django的model的query，都是通过对名字的稍加修改来实现的，__gt和-deadline
+now_hw = Homework.objects.filter(deadline__gt = now).order_by('-deadline')
+2. 
+
+
+【参考资料】
+1. python中的datetime格式化输出
+http://www.ziqiangxuetang.com/python/datetime_strftime.html
+
+2. django的model的query
+https://docs.djangoproject.com/en/dev/topics/db/queries/
+
+3. bootstrap的表格
+http://www.ziqiangxuetang.com/bootstrap/bootstrap-tables.html
+
+4. 大神是这样分析问题的
+http://www.2cto.com/kf/201502/377772.html
+
+5. django的错误纠正机制
+https://docs.djangoproject.com/en/1.8/howto/error-reporting/
+
+6. django的Field
+https://docs.djangoproject.com/en/1.8/ref/models/fields/
+
+7. django的评论插件
+http://django-contrib-comments.readthedocs.org/en/latest/quickstart.html
+
+
+
+背景颜色：#E2D7D7，#ECA38D，#F9774F
+
+好吧，注意不要太纠结前端(⊙o⊙)…
+
+
+
+
+做学校all页面可以用的：http://v3.bootcss.com/components/#thumbnails-custom-content
+也可以参考之前做arthelpful的页面
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!
+1. Course增加属性“课程给分”，大学和学院，都加个“描述”的属性
+2. "addOKNum": 用ajax来做，还有总的集赞！！！！先放着
+3. 给整个网站加一个赞的属性？要建立什么模型呢？还有浏览量
+4. 作业是以专业为单位来展示的，可能对于"以班为单位的人不公平"？不过我先不管啦，可以把班给叫成专业嘛，就是名目不一样而已，功能还是可以提供的，比如专业为：13计科一班，15计科二班，之类的，哈哈
+5. django传文件时要检查文件类型！！！！不然别人传cgi这些东西你就跪了，ImageField还需要检查吗
+6. 本站说明！！！！！！！！！！里面注意加多一个使用方法！（普通人 and 管理员）
+7. 现在还不打算开放注册，所以不提供登录注册的，不过这个也得先规划好
+
+# 从下面开始，就是实际得做的啦（按紧急程度排序）
+1. breadcrumb要做好
+2. ajax来给集赞加功能
+3. Course增加属性“课程给分”，大学和学院，都加个“描述”的属性，model重新检查一遍
+4. 做个首页呗，引导一下(⊙o⊙)…help一下
+4. 尝试用mysql。。。（先别急着导入数据啊，记得备份sqlite）
+5. 课程详情和作业详情记得加多一个评论区（先建好模型？不过暂时不急啦，给个反馈的地址，发邮件给我就行）
+5. 正式导入数据（线放到服务器上，再在服务器上导入数据，调试static
+6. 引入评论区，在"detail"页面分别加入，以“侧边栏”的形式
+7777. 注意model的后台，charfield输入过多字符，会是怎么样的情况呢？
+
+666. 如果要引入纠错区，评论区（两个合起来？），那么就得加入邮件啦
+
+Now：
+1. 增加纠错区，评论区，再测试下可否发邮件哈哈。
+2. python里面的import，还是要好好研究一下
+
+
+
+
+
+我的作业：
+1. 数据库实验要导入数据库并熟悉sql server的使用
+2. 课本2.9-3.5（db）
+3. 算法课要刷题（有理论课作业？）
+4. 人工智能（有理论作业吗？）不过有实验课作业
+5. 高级编程技术（有作业，看word）
+6. 计算机图形学。。。不急，小论文
+8. 科技论文阅读好像没作业？？？（有期末大作业好像）
+
+
+sort:
+1. 数值计算（什么时候交呢？赶紧做啊啊啊）
+2. 高级编程技术（有作业，看word）好像已经过期了，哈哈，今天星期三哦
+2. 算法课要刷题（有理论课作业？）
+3. 课本2.9-3.5（db）
+
+
+
+
+    <ol class="breadcrumb">
+        {% for link in breadUrls %}
+            {% cycle '大学' '学院' '专业' '课程' as tag silent %}
+            <li><a href="{{ link }}">{{ tag }}</a></li>
+        {% endfor %}
+        <li class="active">作业详情</li>
+    </ol>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#b01").click(function(){
+  htmlobj=$.ajax({url:"/jquery/test1.txt",async:false});
+  $("#myDiv").html(htmlobj.responseText);
+  });
+});
+</script>
+
+function sendLedControl( dev_id , cur_status ){
+  $.ajax({
+    url: '/api/leds/' + dev_id, // /api/leds/1
+    async: true,
+    dataType: 'json',
+    type: 'PUT',
+    data: JSON.stringify({status:cur_status}),
+
+    success: function(data , textStatus){
+      console.log("success");
+    },
+   
+    error: function(jqXHR , textStatus , errorThrown){
+      console.log("error");
+    },
+   
+  });
+}
+
+
+使用上下文渲染器！！！！
+
+
+url获取参数，不需要正则匹配，因为正则只匹配url部分，而不管参数部分
+直接在request.GET中获取参数就好了
+
+[solutions for installing mysql]
+http://www.crifan.com/python_install_module_mysql_mysqldb/
+
+_mysql.c(42): fatal error C1083: 无法打开包括文件: “config-win.h”: No such file or directory
+error: command 'D:\\soft\\vs2015\\VC\\BIN\\amd64\\cl.exe' failed with exit status 2
+
+http://dmyz.org/archives/110
+http://jingyan.baidu.com/article/f3ad7d0ffc061a09c3345bf0.html
+
+
+
+# 反馈和评论先别做了
+反馈区 {
+  
+}
+
+
+# Now：
+1. 纠错按钮：弹出窗口，填写昵称，本人邮件地址
+2. 放到服务器上测试！！！
+3. 开放DDL邮件订阅（这个要怎么做呢？定时一个脚本过去检查？）{
+  只在专业下面才做那个按钮！！！哈哈，天才啊
+}
+
+
+
+<form>
+  <div class="form-group">
+    <label for="yourName">您的称呼：</label>
+    <input type="text" class="form-control" id="yourName" placeholder="称呼">
+  </div>
+  <div class="form-group">
+    <label for="yourEmail">您的邮箱：</label>
+    <input type="email" class="form-control" id="yourEmail" placeholder="邮箱">
+  </div>
+  <div class="form-group">
+    <label for="suggestion">反馈意见：</label>
+    <textarea id="suggestion" class="form-control" rows="8"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+注意时区！！！！！！！很重要
+

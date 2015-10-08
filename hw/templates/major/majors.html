@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block breadcrumb %}
+<!-- 	<ol class="breadcrumb">
+		<li><a href="#">大学</a></li>
+		<li><a href="#">学院</a></li>
+		<li class="active">专业</li>
+	</ol> -->
+	<ol class="breadcrumb">
+		{% for link in breadUrls %}
+			{% cycle '大学' '学院' '专业' as tag silent %}
+			<li><a href="{{ link }}">{{ tag }}</a></li>
+		{% endfor %}
+		<li class="active">专业</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h3>
+专业课程开设情况
+{% if mySchool %}
+	<span class="label label-success"><a href="{{ goto }}" style="color:white">{{ mySchool }}</a></span>
+{% endif %}
+</h3>
+{% if majors %}
+	<table class="table table-responsive table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>专业</th>
+				<th>年级</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for m in majors %}
+			<tr class="{% cycle 'success' '' 'danger' '' 'active' '' 'info' '' 'warning' %}">
+				<td width="50%"><a href="{% url 'major_detail' m.id %}">{{ m.name }}</a></td>
+				<td width="20%">{{ m.year }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<span class="label label-warning">暂时还没开设专业</span>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block breadcrumb %}
+	<li><a href="#">大学</a></li>
+	<li><a href="#">学院</a></li>
+	<li><a href="#">专业</a></li>
+	<li><a href="#">课程</a></li>
+	<li class="active">作业</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h3>正在进行中的作业</h3>
+<table class="table table-responsive table-hover table-bordered">
+	<thead>
+		<tr>
+			<th>所属课程</th>
+			<th>作业名称</th>
+			<th>作业内容</th>
+			<th>截止日期</th>
+			<th>提交方式</th>
+			<th>已完成人数</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for h in now_hw %}
+		<tr class="{% cycle 'success' '' 'danger' '' 'active' '' 'info' '' 'warning' %}">
+			<td width="15%">{{ h.myCourse }}</td>
+			<td width="15%">{{ h.name }}</td>
+			<td width="25%">{{ h.description }}</td>
+			<td width="15%">{{ h.deadline }}</td>
+			<td width="20%">
+			{% autoescape off %}
+			    {{ h.myCourse.howToSubmit }}
+			{% endautoescape %}
+			</td>
+			<td width="10%">{{ h.OK_num }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<hr/>
+<h3>已经结束的作业</h3>
+<table class="table table-responsive table-hover table-bordered">
+	<thead>
+		<tr>
+			<th>所属课程</th>
+			<th>作业名称</th>
+			<th>作业内容</th>
+			<th>截止日期</th>
+			<th>提交方式</th>
+			<th>已完成人数</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for h in pass_hw %}
+		<tr class="{% cycle 'success' '' 'danger' '' 'active' '' 'info' '' 'warning' %}">
+			<td width="15%">{{ h.myCourse }}</td>
+			<td width="15%">{{ h.name }}</td>
+			<td width="25%">{{ h.description }}</td>
+			<td width="15%">{{ h.deadline }}</td>
+			<td width="20%">
+			{% autoescape off %}
+			    {{ h.myCourse.howToSubmit }}
+			{% endautoescape %}
+			</td>
+			<td width="10%">{{ h.OK_num }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock content %}

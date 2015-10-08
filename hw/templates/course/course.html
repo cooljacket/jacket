@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% for link in breadUrls %}
+			{% cycle '大学' '学院' '专业' as tag silent %}
+			<li><a href="{{ link }}">{{ tag }}</a></li>
+		{% endfor %}
+		<li class="active">课程详情</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h3>{{ course.name }}	<small><span class="label label-success">课程详情</span></small></h3>
+<div class="col-sm-8">
+	<ul class="list-group">
+		<li class="list-group-item list-group-item-info">老师: {{ course.teachers }}</li>
+		<li class="list-group-item list-group-item-danger">
+			作业提交方式:<br/>
+			{% autoescape off %}
+				{{ course.howToSubmit }}
+			{% endautoescape %}
+		</li>
+		<li class="list-group-item list-group-item-warning">
+			课程给分:<br>
+			{% autoescape off %}
+				{{ course.exam }}
+			{% endautoescape %}
+		</li>
+		<li class="list-group-item list-group-item-success">
+		课程主页: <a href="{{ course.homepage }}">{{ course.homepage }}</a>
+		</li>
+	</ul>
+	<hr/>
+	<ul class="list-group">
+		{% for hw in hws %}
+			{% cycle 'success' '' 'danger' '' 'active' '' 'info' '' 'warning' as color silent %}
+			<li class="list-group-item {{ color }}">
+				<a href="{% url 'hw_detail' hw.id %}">{{ hw.name }}</a>
+			</li>	
+		{% endfor %}
+	</ul>
+</div>
+{% endblock content %}

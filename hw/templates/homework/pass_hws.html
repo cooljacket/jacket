@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block forEmail %}
+	<button type="button" class="btn btn-primary navbar-btn">
+		<a href="#" style='color:white'>订阅作业DDL邮件提醒</a>
+	</button>
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% for link in breadUrls %}
+			{% cycle '大学' '学院' '专业' as tag silent %}
+			<li><a href="{{ link }}">{{ tag }}</a></li>
+		{% endfor %}
+		<li class="active">{{ major }}的作业</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h3>已经结束的作业
+	<small>
+	<span class="label label-success"><a href="{{ goto }}" style="color:white">查看正在进行的作业</a></span>
+	</small>
+</h3>
+	<!-- <small><a href="{{ goto }}">查看正在进行的作业</a></small></h3> -->
+{% if pass_hws %}
+	<table class="table table-responsive table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>所属课程</th>
+				<th>作业名称</th>
+				<th>作业内容</th>
+				<th>截止日期</th>
+				<th>提交方式</th>
+				<th>已完成人数</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for h in pass_hws %}
+			<tr class="{% cycle 'success' '' 'danger' '' 'active' '' 'info' '' 'warning' %}">
+				<td width="15%"><a href="{% url 'course_detail' h.myCourse.id %}">{{ h.myCourse }}</a></td>
+				<td width="15%"><a href="{% url 'hw_detail' h.id %}">{{ h.name }}</a></td>
+				<td width="25%">{{ h.description }}</td>
+				<td width="15%">{{ h.deadline }}</td>
+				<td width="20%">
+				{% autoescape off %}
+				    {{ h.myCourse.howToSubmit }}
+				{% endautoescape %}
+				</td>
+				<td width="10%">
+					<button class="btn btn-success hw_OK" type="button">
+						<a href="#" style='color:white'>我也完成了</a>
+						<span class="badge">{{ h.OK_num }}</span>
+						<input class="hid" type="hidden" value="{{ h.id }}">
+					</button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<span class="label label-warning">My God, 还没到DDL</span>
+{% endif %}
+{% endblock content %}
+
+{% block myJS %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".hw_OK").click(function(){
+		var param = {hid: $(this).find('input').val()};
+		OK_num = $.ajax({
+		url: '/add_ok_num',
+		async: false,
+		data: param,
+		dataType: 'json',
+	});
+	$(this).find('span').text(OK_num.responseText);
+});
+});
+</script>
+{% endblock myJS %}
+
+

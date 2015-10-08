@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		<li class="active">大学</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h3>
+所有大学
+{% if collegeName %}
+	<span class="label label-success"><a href="{{ goBack }}" style="color:white">{{ collegeName }}</a></span>
+{% endif %}
+</h3>
+{% if colleges %}
+<div class="row">
+{% for c in colleges %}
+  <div class="col-sm-4 col-md-3">
+    <div class="thumbnail">
+      <img src="{{ c.icon.url }}" alt="{{ c.name }}">
+      <div class="caption">
+        <h4><a href="{% url 'college_detail' c.id %}">{{ c.name }}</a></h4>
+        <p>{{ c.intro }}</p>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% else %}
+	<span class="label label-warning">暂时还没大学在本网站注册</span>
+{% endif %}
+{% endblock content %}

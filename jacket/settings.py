@@ -23,9 +23,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'v3f(_sslbnha=35#a1_pmkks!vb+h1$gy)k9b)_iwu=u9ua(@z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# import socket
+# if socket.gethostname() == 'jacket':
+#     DEBUG = False
+#     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# else:
+#     DEBUG = True
+#     ALLOWED_HOSTS = []
 DEBUG = True
-
 ALLOWED_HOSTS = []
+# DEBUG = False
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,6 +45,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'django_comments',
+    #'django.contrib.sites',
+
+    'DjangoUeditor',
+    'hw',
+    'jacket',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,7 +69,7 @@ ROOT_URLCONF = 'jacket.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'GlobalTemplates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'hw.utils.bread.get_hw_zan_num',
             ],
         },
     },
@@ -80,6 +95,17 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+# using mysql to be the database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'jacket',
+#         'USER':'root',
+#         'PASSWORD':'jacket',
+#         'HOST':'127.0.0.1',
+#         'PORT':'3306',
+#     }
+# }
 
 
 # Internationalization
@@ -87,7 +113,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'CN'
 
 USE_I18N = True
 
@@ -101,3 +127,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/mysite/static/'
+MEDIA_ROOT = '/mysite/media/'
+MEDIA_URL = './mysite/media/'
+
+# 发生错误时会发送邮件给你
+# ADMINS = (('Jacket', 'insysujacket@gmail.com'))
+# SERVER_EMAIL = 'zuoyela_jacket@sina.com'
+# caibudao233666
+
+# SITE_ID = 1
+# COMMENTS_APP = 'hw'

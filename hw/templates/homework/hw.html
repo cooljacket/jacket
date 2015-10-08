@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% for link in breadUrls %}
+			{% cycle '大学' '学院' '专业' '课程' as tag silent %}
+			<li><a href="{{ link }}">{{ tag }}</a></li>
+		{% endfor %}
+		<li class="active">作业详情</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block content %}
+所属课程：{{ hw.myCourse }}<br>
+作业名称：{{ hw.name }}<br>
+截止日期：{{ hw.deadline }}<br>
+{% endblock content %}

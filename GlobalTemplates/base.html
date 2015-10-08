@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height:100%;">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>{% block title %}Welcome to Jacket's world{% endblock title %}</title>
+
+    <!-- Bootstrap -->
+    <!-- <link href="admin/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  </head>
+  <body style="height:100%">
+  <div style="position:relative;min-height:100%;">
+    <nav class="navbar" role="navigation">
+       <div class="navbar-header">
+          <a class="navbar-brand" href="#" style='color:black'>作业LA</a>
+       </div>
+       <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <!-- <button type="button" class="btn btn-primary navbar-btn">
+              <a href="#" style='color:white'>经验分享</a>
+            </button>
+            <button type="button" class="btn btn-primary navbar-btn">
+              <a href="#" style='color:white'>讨论区</a>
+            </button> -->
+            
+            <!-- <button type="button" class="btn btn-primary navbar-btn">
+              <a href="#" style='color:white'>有错误OR建议请点我</a>
+            </button> -->
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sub_modal">
+              有错误OR建议请点我
+            </button>
+            <div class="modal fade" id="sub_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="myModalLabel" style="text-align:center;"><b>感谢反馈</b></h3>
+                  </div>
+                  <div class="modal-body">
+                      <form method="post">
+                      {% csrf_token %}
+                        <div class="form-group">
+                          <label for="yourName">您的称呼：</label>
+                          <input type="text" class="form-control" id="yourName" placeholder="称呼" name="name">
+                        </div>
+                        <div class="form-group">
+                          <label for="yourEmail">您的邮箱：</label>
+                          <input type="email" class="form-control" id="yourEmail" placeholder="邮箱" name="email">
+                        </div>
+                        <div class="form-group">
+                          <label for="suggestion">反馈意见(最多接受200字)：</label>
+                          <textarea id="yourSuggestion" class="form-control" rows="8" name="suggestion"></textarea>
+                        </div>
+
+                        <!-- <button id="sub_suggestion" type="submit" class="btn btn-default">Submit</button> -->
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button> -->
+                    <button id="sub_suggestion" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <button id='goodBoy' type="button" class="btn btn-primary navbar-btn">
+              <a style='color:white'>赞一个再撒</a>
+              <span class="label label-info" id='hw_zan'>({{ hw_zan_num }})</span>
+            </button>
+
+            {% block forEmail %}{% endblock %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <button type="button" class="btn btn-primary navbar-btn">
+              <a href="{% url 'aboutMe' %}" style='color:white'>关于</a>
+            </button>
+          </ul>
+       </div>
+    </nav>
+
+    {% block breadcrumb %}{% endblock %}
+
+    <div class="container">
+      {% block watchOut %}
+      <b>*注：本站正在测试使用中，如有bugs请多见谅，谢谢</b><br><hr>
+      {% endblock watchOut %}
+      {% block content %}I am content.{% endblock content %}
+      <hr>
+    </div>
+
+    <footer class="copyright" style='padding-bottom:10px;position:absolute;bottom:0px'>
+      <div class="container">
+        <div class="row">
+          <center>
+            <span class="text-success">Copyright &copy; 陈榕涛 All Rights Reserved | insysujacket@gmail.com</span>
+          </center>
+        </div>
+      </div>
+    </footer>
+    
+  </div>
+
+  <div class="modal fade" id="suggestion_result">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">反馈结果</h4>
+        </div>
+        <div class="modal-body">
+          <p id="sug_RespondText"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#goodBoy").click(function(){
+      htmlobj = $.ajax({
+        url: {% url 'add_hw_zan' %}, 
+        async: false
+      });
+      $("#hw_zan").text(htmlobj.responseText);
+    });
+
+    $("#sub_suggestion").click(function(){
+      $.get(
+        {% url 'giveSuggestion' %},
+        {
+          name: $("#yourName").val(),
+          email: $("#yourEmail").val(),
+          suggestion: $("#yourSuggestion").val()
+        },
+        function(data, re, xml) {
+          $("#sug_RespondText").text(data);
+          $("#suggestion_result").modal('show');
+        });
+    });
+  });
+  </script>
+
+  {% block myJS %}{% endblock myJS %}
+
+  </body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		<li class="active">大学详情</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block content %}
+{% if college %}
+	<div class="jumbotron">
+		<div class="thumbnail">
+			<img src="{{ college.icon.url }}" alt="{{ college.name }}">
+			<div class="caption">
+				<h4>{{ college.name }}</h4>
+				<p>{{ college.intro }}</p>
+			</div>
+		</div>
+	</div>
+	<hr/>
+	{% if schools %}
+	<h3>
+		学院列表
+		<span class="label label-success">{{ college.name }}</span>
+	</h3>
+		<ul class="list-group">
+			{% for s in schools %}
+				{% cycle 'success' '' 'danger' '' 'active' '' 'info' '' 'warning' as color silent %}
+				<li class="list-group-item {{ color }}">
+					<a href="{% url 'school_detail' s.id %}">{{ s.name }}</a>
+				</li>	
+			{% endfor %}
+		</ul>
+	{% else %}
+		<h3>该大学暂时还没有开设学院</h3>
+	{% endif %}
+{% endif %}
+{% endblock content %}
