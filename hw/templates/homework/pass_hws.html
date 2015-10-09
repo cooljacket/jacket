@@ -3,9 +3,24 @@
 {% block title %} {{ title }} {% endblock title %}
 
 {% block forEmail %}
-	<button type="button" class="btn btn-primary navbar-btn">
-		<a href="#" style='color:white'>订阅作业DDL邮件提醒</a>
-	</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sub_email">
+订阅作业DDL邮件提醒
+</button>
+<div class="modal fade" id="sub_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h3 class="modal-title" id="subModalLabel" style="text-align:center;"><b>订阅邮件提醒</b></h3>
+			</div>
+			<div class="modal-body">
+			此功能还在开发中
+			</div>
+			<div class="modal-footer">
+				<button id="sub_email" type="submit" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block breadcrumb %}

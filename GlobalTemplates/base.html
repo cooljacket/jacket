@@ -41,7 +41,7 @@
                     <h3 class="modal-title" id="myModalLabel" style="text-align:center;"><b>感谢反馈</b></h3>
                   </div>
                   <div class="modal-body">
-                      <form method="post">
+                      <form id="sug_form" action="{% url 'giveSuggestion' %}">
                       {% csrf_token %}
                         <div class="form-group">
                           <label for="yourName">您的称呼：</label>
@@ -55,14 +55,12 @@
                           <label for="suggestion">反馈意见(最多接受200字)：</label>
                           <textarea id="yourSuggestion" class="form-control" rows="8" name="suggestion"></textarea>
                         </div>
-
-                        <!-- <button id="sub_suggestion" type="submit" class="btn btn-default">Submit</button> -->
+                        <button id="sub_suggestion" type="submit" class="btn btn-primary">提交</button>
                       </form>
                   </div>
-                  <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button> -->
-                    <button id="sub_suggestion" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
-                  </div>
+                  <!-- <div class="modal-footer">
+                    <button id="sub_suggestion" type="submit" class="btn btn-primary" data-dismiss="modal">提交</button>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -132,24 +130,36 @@
   <script type="text/javascript">
   $(document).ready(function(){
     $("#goodBoy").click(function(){
-      htmlobj = $.ajax({
+      $.ajax({
         url: {% url 'add_hw_zan' %}, 
-        async: false
+        async: false,
+        success: function(data, re, xml) {
+          $("#hw_zan").text(data);
+        }
       });
-      $("#hw_zan").text(htmlobj.responseText);
     });
 
-    $("#sub_suggestion").click(function(){
-      $.get(
-        {% url 'giveSuggestion' %},
-        {
-          name: $("#yourName").val(),
-          email: $("#yourEmail").val(),
-          suggestion: $("#yourSuggestion").val()
-        },
-        function(data, re, xml) {
-          $("#sug_RespondText").text(data);
-          $("#suggestion_result").modal('show');
+    $("#sug_form").submit(function(e){
+      e.preventDefault();
+      $('#sub_modal').modal('hide');
+      $.ajax({
+          url: {% url 'giveSuggestion' %},
+          type: 'POST',
+          data:
+          {
+            name: $("#yourName").val(),
+            email: $("#yourEmail").val(),
+            suggestion: $("#yourSuggestion").val(),
+            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+          },
+          success: function(data, re, xml) {
+            $("#sug_RespondText").text(data);
+            $("#suggestion_result").modal('show');
+          },
+          error: function(data, re, xml) {
+            $("#sug_RespondText").text('提交失败，如果不是网络原因，请发邮件告知我，谢谢');
+            $("#suggestion_result").modal('show');
+          }
         });
     });
   });

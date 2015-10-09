@@ -23,16 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'v3f(_sslbnha=35#a1_pmkks!vb+h1$gy)k9b)_iwu=u9ua(@z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# import socket
-# if socket.gethostname() == 'jacket':
-#     DEBUG = False
-#     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-# else:
-#     DEBUG = True
-#     ALLOWED_HOSTS = []
-DEBUG = True
-ALLOWED_HOSTS = []
-# DEBUG = False
+import socket
+if socket.gethostname() == 'jacket':
+    DEBUG = False
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = []
+# DEBUG = True
+# ALLOWED_HOSTS = []
+# # DEBUG = False
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 

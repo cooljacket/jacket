@@ -207,6 +207,13 @@ https://docs.djangoproject.com/en/1.8/ref/models/fields/
 7. django的评论插件
 http://django-contrib-comments.readthedocs.org/en/latest/quickstart.html
 
+8. jquery的ajax
+http://www.w3school.com.cn/jquery/ajax_ajax.asp
+
+9. jquery的事件
+http://www.w3school.com.cn/jquery/event_submit.asp
+
+10. 
 
 
 背景颜色：#E2D7D7，#ECA38D，#F9774F
@@ -337,6 +344,12 @@ http://jingyan.baidu.com/article/f3ad7d0ffc061a09c3345bf0.html
 2. 放到服务器上测试！！！
 3. 开放DDL邮件订阅（这个要怎么做呢？定时一个脚本过去检查？）{
   只在专业下面才做那个按钮！！！哈哈，天才啊
+  model{
+    yourEmail
+    limitation(小于多少的时候，会发送通知)，是否
+    forgin key到Major那里
+  }
+  python脚本，每隔一分钟去check所有专业的
 }
 
 
@@ -380,4 +393,24 @@ http://jingyan.baidu.com/article/f3ad7d0ffc061a09c3345bf0.html
 
 
 注意时区！！！！！！！很重要
+
+http://www.cnblogs.com/fish-li/archive/2011/07/17/2108884.html#_label6
+
+thunder://QUFlZDJrOi8vfGZpbGV8ob5MT0y159OwzOzMw3d3dy5sb2xkeXR0LmNvbaG/z8TC5czYt7PE1TIwMTW5+tPv1tDX1ihsb2xkeXR0LmNvbSkubXA0fDE3NzUyMTM3MjZ8MjIzMjAwODU5MjZBN0RGQ0JEQzYyOEE2RjhBNEM5MUV8aD1CU0NISDZURUJGSkFFUE4zQ0dTSkhIVElPSDdPNjU1T3wvWlo=
+
+
+CVPR, ECCV, BMVC，ACCV，ICCV
+
+
+TIP, ICCV, ECCV, IJCV
+会议：CVPR ICCV  ECCV ICIP ICASSP 
+期刊：
+Trans IP 
+IJCV
+Trans PAMI
+
+
+http://www.ccf.org.cn/sites/ccf/paiming.jsp
+
+http://blog.renren.com/share/200201948/10886114803
 

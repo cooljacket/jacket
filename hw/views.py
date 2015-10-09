@@ -219,25 +219,11 @@ def add_ok_num(request):
 	return HttpResponse(str(hw.OK_num))
 
 
-# def giveSuggestion(request):
-# 	name = request.POST.get('name', 'nobody')
-# 	email = request.POST.get('email', '233@666.com')
-# 	suggestion = request.POST.get('suggestion', None)
-
-# 	print(request.POST)
-# 	print(name, email, suggestion)
-
-# 	if suggestion:
-# 		sug = Suggestion()
-# 		print(name, email, suggestion)
-# 		return HttpResponse(name+email+suggestion)
-
-# 	return HttpResponse('hehe')
-
+# 使用POST更安全，因为有django提供的csrf验证
 def giveSuggestion(request):
-	name = request.GET.get('name', 'nobody')
-	email = request.GET.get('email', '233@666.com')
-	suggestion = request.GET.get('suggestion', None)
+	name = request.POST.get('name', 'nobody')
+	email = request.POST.get('email', '233@666.com')
+	suggestion = request.POST.get('suggestion', None)
 
 	if suggestion:
 		sug = Suggestion(name=name, email=email, suggestion=suggestion)
@@ -245,4 +231,16 @@ def giveSuggestion(request):
 		return HttpResponse('谢谢你的反馈意见')
 
 	return HttpResponse('反馈意见为空或传输数据出了故障，请稍后再试')
+
+# def giveSuggestion(request):
+# 	name = request.GET.get('name', 'nobody')
+# 	email = request.GET.get('email', '233@666.com')
+# 	suggestion = request.GET.get('suggestion', None)
+
+# 	if suggestion:
+# 		sug = Suggestion(name=name, email=email, suggestion=suggestion)
+# 		sug.save()
+# 		return HttpResponse('谢谢你的反馈意见')
+
+# 	return HttpResponse('反馈意见为空或传输数据出了故障，请稍后再试')
 
