@@ -85,7 +85,7 @@
 
     <div class="container">
       {% block watchOut %}
-      <b>*注：本站正在测试使用中，如有bugs请多见谅，谢谢</b><br><hr>
+      <b>*注：本站正在测试使用中，如有bugs请多见谅，谢谢（ps,由于服务器在洛杉矶，缓存神马的我还没配置好，所以访问起来很慢，请见谅）</b><br><hr>
       {% endblock watchOut %}
       {% block content %}I am content.{% endblock content %}
       <hr>
@@ -132,7 +132,6 @@
     $("#goodBoy").click(function(){
       $.ajax({
         url: {% url 'add_hw_zan' %}, 
-        async: false,
         success: function(data, re, xml) {
           $("#hw_zan").text(data);
         }

@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from . import settings
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+# from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -52,10 +53,7 @@ urlpatterns = [
     url(r'^giveSuggestion/$', 'hw.views.giveSuggestion', name='giveSuggestion'),
 
 	url(r'^ueditor/',include('DjangoUeditor.urls' )),
-    url(r'^comments/', include('django_comments.urls')),
     url(r'^admin/', include(admin.site.urls)),
     #url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_ROOT }), 
-]
-
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#urlpatterns += staticfiles_urlpatterns()
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += staticfiles_urlpatterns()

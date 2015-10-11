@@ -6,12 +6,13 @@ from django.core.urlresolvers import reverse
 name_len = 30
 icon_len = 30
 longText = 400
+ImageUrl = 'hw/%Y/%m/%d'
 
 # Create your models here.
 class College(models.Model):
 	"""College"""
 	name = models.CharField('学校', max_length=name_len)
-	icon = models.FileField(verbose_name='校徽')
+	icon = models.ImageField(verbose_name='校徽', upload_to=ImageUrl)
 	# intro = models.UEditorField('大学介绍', max_length=longText, blank=True, height=300, width='100%', toolbars='besttome')
 
 	def __str__(self):
@@ -28,7 +29,7 @@ class School(models.Model):
 	"""School"""
 	myCollege = models.ForeignKey(College, verbose_name='所属大学')
 	name = models.CharField('学院', max_length=name_len)
-	icon = models.ImageField('院徽')
+	icon = models.ImageField(verbose_name='院徽', upload_to=ImageUrl)
 	#intro = models.UEditorField('学院介绍', max_length=longText, blank=True, height=300, width='100%', toolbars='besttome')
 
 	def __str__(self):

@@ -23,16 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'v3f(_sslbnha=35#a1_pmkks!vb+h1$gy)k9b)_iwu=u9ua(@z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-import socket
-if socket.gethostname() == 'jacket':
-    DEBUG = False
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = []
-# DEBUG = True
-# ALLOWED_HOSTS = []
-# # DEBUG = False
+#import socket
+#if socket.gethostname() == 'jacket':
+#    DEBUG = False
+#    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+#else:
+#    DEBUG = True
+#    ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []
+# DEBUG = False
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
@@ -113,7 +113,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'CN'
+TIME_ZONE = 'UTC' 
 
 USE_I18N = True
 
@@ -126,9 +126,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/mysite/static/'
-MEDIA_ROOT = '/mysite/media/'
-MEDIA_URL = './mysite/media/'
+STATIC_ROOT = '/static/'
+MEDIA_ROOT = '/media/'
+MEDIA_URL = '/media/'
 
 # 发生错误时会发送邮件给你
 # ADMINS = (('Jacket', 'insysujacket@gmail.com'))
