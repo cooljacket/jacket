@@ -28,7 +28,7 @@ def hw_detail(request, pk):
 	except Homework.DoesNotExist:
 		return render(request, 'errors/404.html', {'err_msg': '并没有这个作业'})
 
-	breadUrls = getBreadUrls(ObjNum.HW, pk)
+	breadUrls = getBreadUrls(ObjNum.HW, pk)[0:-1]
 	return render(request, 'homework/hw.html', locals())
 
 

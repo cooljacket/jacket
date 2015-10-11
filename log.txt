@@ -79,6 +79,7 @@ http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html
 
 the web client <-> the web server <-> the socket <-> uwsgi <-> Django
 
+uwsgi --http :8000 --module jacket.wsgi
 
 uwsgi --socket /tmp/jacket.sock --wsgi-file test.py & chmod 777 /tmp/jacket.sock
 
@@ -133,17 +134,6 @@ DATABASES = {
 
 
 写完数据模型，后台添加应该是没什么问题了，所以现在主要是写前端视图
-
-
-course的这个属性可能还要斟酌一下：
-mentor = models.ManyToManyField(Teacher, verbose_name='老师', max_length=name_len)
-
-这个field做一个自动更新？本地js还是要一直跟服务器ajax？
-deadline = models.DateTimeField('DDL')
-
-
-可能改成yes或no比较好
-topIt = models.BooleanField('置顶', default=False)
 
 
 # 向已有model中增加新的字段
@@ -219,8 +209,6 @@ http://www.w3school.com.cn/jquery/event_submit.asp
 背景颜色：#E2D7D7，#ECA38D，#F9774F
 
 好吧，注意不要太纠结前端(⊙o⊙)…
-
-
 
 
 做学校all页面可以用的：http://v3.bootcss.com/components/#thumbnails-custom-content
@@ -414,3 +402,84 @@ http://www.ccf.org.cn/sites/ccf/paiming.jsp
 
 http://blog.renren.com/share/200201948/10886114803
 
+
+肯定要做好缓存！！！不然真的跪了，连个ajax都这么慢？（设置成异步的吧）
+使用国内的CDN，或者把bootstrap放到服务器上，真心受不鸟。。。
+作业详情页的breadcrumb出错了，多了个“大学”
+
+http://blog.csdn.net/wang794686714/article/details/41978487
+
+http://happyjacket.me:8000/static/admin/css/base.css
+
+uwsgi --http :8000 --module jacket.wsgi
+
+
+
+http://happyjacket.me/static/admin/img/tooltag-add.png
+
+http://happyjacket.me/static/hello.html
+
+uwsgi --ini /mysite/mysite_uwsgi.ini
+
+http://supervisord.org/configuration.html
+
+
+【nginx好教程】
+http://www.open-open.com/lib/view/open1392709343194.html
+
+关闭所有uwsgi进程：killall -9 uwsgi
+http://www.nowamagic.net/academy/detail/1330334
+
+
+#####git撤销本地修改：
+git reset HEAD <file name>
+git checkout <file name>
+
+
+#####django部署static：
+设置MEDIA_ROOT和MEDIA_URL，然后
+
+
+
+course的这个属性可能还要斟酌一下：
+mentor = models.ManyToManyField(Teacher, verbose_name='老师', max_length=name_len)
+
+
+!!!!!!!!!!!!!!!!!!!!
+作业是以专业为单位来展示的，可能对于"以班为单位的人不公平"？不过我先不管啦，可以把班给叫成专业嘛，就是名目不一样而已，功能还是可以提供的，比如专业为：13计科一班，15计科二班，之类的，哈哈
+
+1. 本站说明！！！！！！！！！！里面注意加多一个使用方法！（普通人 and 管理员）
+2. 现在还不打算开放注册，所以不提供登录注册的，不过这个也得先规划好
+3. 做个首页呗，引导一下(⊙o⊙)…help一下
+4.0 aboutMe页面要写（权责声明，使用说明之类的）
+4. 尝试用mysql。。。（先别急着导入数据啊，记得备份sqlite）
+5. 正式导入数据（线放到服务器上，再在服务器上导入数据，调试static
+
+
+
+
+#### Later
+5. 课程详情和作业详情记得加多一个评论区（先建好模型？不过暂时不急啦，给个反馈的地址，发邮件给我就行）
+6. 引入评论区，在"detail"页面分别加入，以“侧边栏”的形式
+7777. 注意model的后台，charfield输入过多字符，会是怎么样的情况呢？
+
+666. 如果要引入纠错区，评论区（两个合起来？），那么就得加入邮件啦
+倒计时也先放着
+
+
+
+####
+10/11/2015 17.21
+static文件和media文件的设置已经搞定，另外bootstrap和jquery都设置为本地的文件，不要用cdn，不靠谱。。nginx那么快
+服务器配置也基本搞定了，再加一个supervisor来控制就好了
+但是发现服务器时常被校园网墙。。。
+
+
+
+
+
+
+from django.core.mail import send_mail
+
+send_mail(u'邮件标题', u'邮件内容', 'from@example.com',
+    ['to@example.com'], fail_silently=False)

@@ -8,8 +8,8 @@
     <title>{% block title %}Welcome to Jacket's world{% endblock title %}</title>
 
     <!-- Bootstrap -->
-    <!-- <link href="admin/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.5/css/bootstrap.min.css' %}">
   </head>
   <body style="height:100%">
   <div style="position:relative;min-height:100%;">
@@ -85,7 +85,7 @@
 
     <div class="container">
       {% block watchOut %}
-      <b>*注：本站正在测试使用中，如有bugs请多见谅，谢谢（ps,由于服务器在洛杉矶，缓存神马的我还没配置好，所以访问起来很慢，请见谅）</b><br><hr>
+      <b>*注：本站正在测试使用中，如有bugs请多见谅，谢谢（ps,由于服务器在洛杉矶，校园网有时会墙掉这个~*#%*...请见谅）</b><br><hr>
       {% endblock watchOut %}
       {% block content %}I am content.{% endblock content %}
       <hr>
@@ -122,10 +122,10 @@
 
 
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-  <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+  <script src="{% static 'jquery/jquery-1.11.3.min.js' %}"></script>
 
   <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="{% static 'bootstrap-3.3.5/js/bootstrap.min.js' %}"></script>
 
   <script type="text/javascript">
   $(document).ready(function(){

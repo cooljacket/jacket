@@ -125,15 +125,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+# STATIC_ROOT = '/mysite/static/'
+STATICFILES_DIRS = ('/mysite/static/', )
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
-MEDIA_ROOT = '/media/'
+MEDIA_ROOT = '/mysite/media/'
 MEDIA_URL = '/media/'
 
 # 发生错误时会发送邮件给你
-# ADMINS = (('Jacket', 'insysujacket@gmail.com'))
-# SERVER_EMAIL = 'zuoyela_jacket@sina.com'
+ADMINS = (('Jacket', 'insysujacket@gmail.com'))
+SERVER_EMAIL = 'zuoyela_jacket@sina.com'
 # caibudao233666
+
+#邮件配置
+EMAIL_HOST = 'smtp.sina.com'               #SMTP地址
+EMAIL_PORT = 25                            #SMTP端口
+EMAIL_HOST_USER = 'zuoyela_jacket@sina.com'  #我自己的邮箱
+EMAIL_HOST_PASSWORD = 'caibudao233666' #我的邮箱密码
+EMAIL_SUBJECT_PREFIX = u'[作业LA]'     #为邮件Subject-line前缀,默认是'[django]'
+EMAIL_USE_TLS = True    #与SMTP服务器通信时，是否启动TLS链接(安全链接)。默认是false
+
 
 # SITE_ID = 1
 # COMMENTS_APP = 'hw'
