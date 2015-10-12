@@ -474,12 +474,34 @@ static文件和media文件的设置已经搞定，另外bootstrap和jquery都设
 服务器配置也基本搞定了，再加一个supervisor来控制就好了
 但是发现服务器时常被校园网墙。。。
 
+好像是dns配置的问题，现在已经解决了，哈哈。
 
+！！！！！错误和建议，还要配置发邮件啊啊啊啊
 
-
+“关于本站”这里加多一个访问量？
 
 
 from django.core.mail import send_mail
 
 send_mail(u'邮件标题', u'邮件内容', 'from@example.com',
     ['to@example.com'], fail_silently=False)
+
+uwsgi --ini /mysite/mysite_uwsgi.ini
+
+
+http://blog.csdn.net/tianranhe/article/details/19644119
+
+附加数据库就可以完成.
+附加数据库:企业管理器--右键"数据库"--所有任务--附加数据库
+--选择你的.mdf文件名--确定--如果提示没有.ldf文件,是否创建,选择"是"
+查询分析器中的方法:
+--有数据文件及日志文件的情况
+sp_attach_db '数据库名'
+,'数据文件名(*.mdf注意要带目录)' --后面可以是用,分隔的该数据库的多个数据文件
+,'日志文件名(*.ldf注意要带目录)'--后面可以是用,分隔的该数据库的多个日志文件
+--如果只有数据文件的情况,'数据文件名(*.mdf注意要带目录)' --后面可以是用,分隔的该数据库的多个数据文件
+sql server 2008下载：
+https://www.microsoft.com/zh-cn/download/details.aspx?id=30438
+
+http://www.quackit.com/sql_server/sql_server_2008/tutorial/
+
