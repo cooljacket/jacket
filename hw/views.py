@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateView
 from hw.models import College, School, Major, Course, Homework, ZAN, Suggestion
 from hw.utils.bread import getBreadUrls, ObjNum, hw_zan_name
+from hw.utils import send_email
 import datetime
 
 
@@ -228,6 +229,10 @@ def giveSuggestion(request):
 	if suggestion:
 		sug = Suggestion(name=name, email=email, suggestion=suggestion)
 		sug.save()
+		content = 'name: %s\nemail: %s\nsuggestion: %s\n' % (name, email, suggestion)
+		print(content)
+		send_email(['1101925754@qq.com'], u'反馈意见', str(content))
+		#send_email(to_list, sub, content)
 		return HttpResponse('谢谢你的反馈意见')
 
 	return HttpResponse('反馈意见为空或传输数据出了故障，请稍后再试')
