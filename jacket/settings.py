@@ -132,7 +132,8 @@ MEDIA_ROOT = '/mysite/media/'
 MEDIA_URL = '/media/'
 
 # 发生错误时会发送邮件给你
-ADMINS = (('Jacket', 'insysujacket@gmail.com'))
+ADMINS = (('Jacket', 'insysujacket@gmail.com'), ('CRT', '1101925754@qq.com'))
+EMAIL_TO_WHON = ['insysujacket@gmail.com', '1101925754@qq.com']
 SERVER_EMAIL = 'zuoyela_jacket@sina.com'
 # caibudao233666
 

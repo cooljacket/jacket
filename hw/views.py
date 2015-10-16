@@ -6,6 +6,7 @@ from django.views.generic.base import TemplateView
 from hw.models import College, School, Major, Course, Homework, ZAN, Suggestion
 from hw.utils.bread import getBreadUrls, ObjNum, hw_zan_name
 from hw.utils import send_email
+from hw.utils.settings import EMAIL_TO_WHON
 import datetime
 
 
@@ -230,22 +231,8 @@ def giveSuggestion(request):
 		sug = Suggestion(name=name, email=email, suggestion=suggestion)
 		sug.save()
 		content = 'name: %s\nemail: %s\nsuggestion: %s\n' % (name, email, suggestion)
-		print(content)
-		send_email(['1101925754@qq.com'], u'反馈意见', str(content))
-		#send_email(to_list, sub, content)
+		send_email.send_email(EMAIL_TO_WHON, str('反馈意见'), str(content))
 		return HttpResponse('谢谢你的反馈意见')
 
 	return HttpResponse('反馈意见为空或传输数据出了故障，请稍后再试')
-
-# def giveSuggestion(request):
-# 	name = request.GET.get('name', 'nobody')
-# 	email = request.GET.get('email', '233@666.com')
-# 	suggestion = request.GET.get('suggestion', None)
-
-# 	if suggestion:
-# 		sug = Suggestion(name=name, email=email, suggestion=suggestion)
-# 		sug.save()
-# 		return HttpResponse('谢谢你的反馈意见')
-
-# 	return HttpResponse('反馈意见为空或传输数据出了故障，请稍后再试')
 

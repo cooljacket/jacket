@@ -1,35 +1,28 @@
 # -*- coding: utf-8 -*-
-import smtplib  
-from email.mime.text import MIMEText  
+import smtplib
+import email.mime.multipart
+import email.mime.text
 
 
-mail_host="smtp.sina.com"       #设置服务器
-mail_user="zuoyela_jacket"      #用户名
-mail_pass="caibudao233666"           #口令 
-mail_postfix="sina.com"         #发件箱的后缀
+EMAIL_HOST = 'zuoyela_jacket@sina.com'
+EMAIL_PASS = 'caibudao233666'
+SMTP_SERVER = 'smtp.sina.com'
+SMTP_PORT = '25'
 
-mail_sender="作业LA"            #在邮件里看到的发送者名称
+def send_email(to_list, sub, content):
+	msg=email.mime.multipart.MIMEMultipart()
+	msg['from'] = EMAIL_HOST
+	msg['to'] = ";".join(to_list)
+	msg['subject'] = sub
+	txt = email.mime.text.MIMEText(content)
+	msg.attach(txt)
 
-def send_email(to_list, sub, content):  
-    '''
-    发送邮件
-    参数：
-        to_list ([string]) - 收件人列表
-        sub     (string)   - 主题
-        content (string)   - 邮件内容
-    '''
-    me = mail_sender + "<" + mail_user + "@" + mail_postfix + ">"   #这里的hello可以任意设置，收到信后，将按照设置显示
-    msg = MIMEText(content,_subtype='html',_charset='gb2312')    #创建一个实例，这里设置为html格式邮件
-    msg['Subject'] = sub    #设置主题
-    msg['From'] = me
-    msg['To'] = ";".join(to_list)  
-    try:  
-        s = smtplib.SMTP()  
-        s.connect(mail_host)  #连接smtp服务器
-        s.login(mail_user, mail_pass)  #登陆服务器
-        s.sendmail(me, to_list, msg.as_string())  #发送邮件
-        s.close()  
-        return True  
-    except:
-        return False
+	smtp=smtplib
+	smtp=smtplib.SMTP()
+	smtp.connect(SMTP_SERVER, SMTP_PORT)
+	smtp.login(EMAIL_HOST, EMAIL_PASS)
+	for to in to_list:
+		print(smtp.sendmail(EMAIL_HOST, to, str(msg)))
+	smtp.quit()
 
+#send_email(['1101925754@qq.com', '18819461579@163.com', 'insysujacket@gmail.com'], '测试哈哈', '正在测试中...\n换行可否？')

@@ -505,3 +505,12 @@ https://www.microsoft.com/zh-cn/download/details.aspx?id=30438
 
 http://www.quackit.com/sql_server/sql_server_2008/tutorial/
 
+
+
+[supervisord]
+logfile = /mysite/hw/supervisord.log
+logfile_maxbytes = 50MB
+logfile_backups = 10
+loglevel = info
+pidfile = /mysite/hw/supervisord.pid
+
