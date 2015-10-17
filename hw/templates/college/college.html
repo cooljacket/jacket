@@ -16,7 +16,11 @@
 			<img src="{{ college.icon.url }}" alt="{{ college.name }}">
 			<div class="caption">
 				<h4>{{ college.name }}</h4>
-				<p>{{ college.intro }}</p>
+				<p>
+					{% autoescape off %}
+						{{ college.intro }}
+					{% endautoescape %}	
+				</p>
 			</div>
 		</div>
 	</div>

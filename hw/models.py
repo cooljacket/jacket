@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 name_len = 30
 icon_len = 30
-longText = 400
+longText = 800
 ImageUrl = 'hw/%Y/%m/%d'
 
 # Create your models here.
@@ -13,7 +13,7 @@ class College(models.Model):
 	"""College"""
 	name = models.CharField('学校', max_length=name_len)
 	icon = models.ImageField(verbose_name='校徽', upload_to=ImageUrl)
-	# intro = models.UEditorField('大学介绍', max_length=longText, blank=True, height=300, width='100%', toolbars='besttome')
+	intro = UEditorField('大学介绍', max_length=longText, blank=True, height=300, width='100%', toolbars='besttome')
 
 	def __str__(self):
 		return str(self.name)
@@ -30,7 +30,7 @@ class School(models.Model):
 	myCollege = models.ForeignKey(College, verbose_name='所属大学')
 	name = models.CharField('学院', max_length=name_len)
 	icon = models.ImageField(verbose_name='院徽', upload_to=ImageUrl)
-	#intro = models.UEditorField('学院介绍', max_length=longText, blank=True, height=300, width='100%', toolbars='besttome')
+	intro = UEditorField('学院介绍', max_length=longText, blank=True, height=300, width='100%', toolbars='besttome')
 
 	def __str__(self):
 		return str(self.name)
@@ -80,11 +80,10 @@ class Course(models.Model):
 	myMajor = models.ForeignKey(Major, verbose_name='所属专业')
 	mentor = models.ManyToManyField(Teacher, verbose_name='老师', max_length=name_len)
 	name = models.CharField('课程', max_length=name_len)
-	# howToSubmit = models.TextField('提交方式', max_length=longText)
 	howToSubmit = UEditorField('提交方式', max_length=longText, height=300, width='100%', toolbars='besttome')
 	homepage = models.URLField('课程主页', max_length=80, blank=True)
 	# notice = models.CharField(max_length=longText)	# later
-	# grading = UEditorField('给分方法', max_length=longText, height=300, width='100%', toolbars='besttome')
+	grading = UEditorField('给分方法', max_length=longText, height=300, width='100%', toolbars='besttome', default='暂时还不清楚')
 
 	def __str__(self):
 		return str(self.name)
@@ -102,9 +101,7 @@ class Homework(models.Model):
 	name = models.CharField('作业名称', max_length=name_len)
 	deadline = models.DateTimeField('DDL')
 	OK_num = models.SmallIntegerField('完成人数', default=0, editable=False)
-	# memo = models.TextField('备注', max_length=longText, blank=True)
-	# description = models.TextField('作业内容', max_length=longText)
-	memo = UEditorField('备注', height=300, width='100%', toolbars='besttome', blank=True)
+	memo = UEditorField('备注', max_length=longText, height=300, width='100%', toolbars='besttome', blank=True)
 	description = UEditorField('作业内容', max_length=longText, height=300, width='100%', toolbars='besttome')
 	topIt = models.BooleanField('置顶', default=False)
 
@@ -116,7 +113,6 @@ class Homework(models.Model):
 
 	class Meta:
 		verbose_name_plural = '作业'
-
 
 class Suggestion(models.Model):
 	"""Suggestion for this app"""
@@ -167,3 +163,5 @@ class ZanOnce(models.Model):
 
 	class Meta:
 		verbose_name_plural = '只赞一次'
+
+
