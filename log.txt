@@ -514,3 +514,5 @@ logfile_backups = 10
 loglevel = info
 pidfile = /mysite/hw/supervisord.pid
 
+https://docs.djangoproject.com/en/1.8/ref/databases/#mysql-notes
+
